@@ -1,0 +1,203 @@
+name: Step 3
+
+on:
+  pull_request:
+    types:
+      - opened
+  issue_comment:
+    types:
+      - created
+
+permissions: {}
+
+concurrency:
+  group: step-3
+  cancel-in-progress: false
+
+env:
+  STEP_4_FILE: ".github/steps/4-step.md"
+
+jobs:
+  find_exercise:
+    name: Find Exercise Issue
+    if: |
+      (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'feat/recipe-cli') ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request == null && github.event.comment.user.type != 'Bot')
+    permissions:
+      issues: read # locate the exercise issue
+    uses: skills/exercise-toolkit/.github/workflows/find-exercise-issue.yml@v0.9.3
+
+  check_step_work:
+    name: Check step work
+    runs-on: ubuntu-latest
+    needs: [find_exercise]
+    if: |
+      github.event_name == 'pull_request' ||
+      needs.find_exercise.outputs.issue-number == github.event.issue.number
+    permissions:
+      contents: read # read the exercise templates
+      pull-requests: read # read pull requests and stacks
+      issues: write # post and update the feedback comment
+    env:
+      ISSUE_REPOSITORY: ${{ github.repository }}
+      ISSUE_NUMBER: ${{ needs.find_exercise.outputs.issue-number }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Get response templates
+        uses: actions/checkout@v6
+        with:
+          repository: skills/exercise-toolkit
+          path: exercise-toolkit
+          ref: v0.9.3
+
+      - name: Find last comment
+        id: find-last-comment
+        uses: peter-evans/find-comment@v4
+        with:
+          repository: ${{ env.ISSUE_REPOSITORY }}
+          issue-number: ${{ env.ISSUE_NUMBER }}
+          comment-author: "github-actions[bot]"
+          body-includes: "watch your progress in the background"
+          direction: last
+
+      - name: Update comment - checking work
+        uses: GrantBirki/comment@v2.1.1
+        with:
+          repository: ${{ env.ISSUE_REPOSITORY }}
+          issue-number: ${{ env.ISSUE_NUMBER }}
+          comment-id: ${{ steps.find-last-comment.outputs.comment-id }}
+          file: exercise-toolkit/markdown-templates/step-feedback/checking-work.md
+          edit-mode: replace
+
+      # START: Check practical exercise
+
+      - name: Check three pull requests are open
+        id: check-open-prs
+        continue-on-error: true
+        run: |
+          for branch in feat/recipe-model feat/recipe-scaling feat/recipe-cli; do
+            count=$(gh pr list --repo "$ISSUE_REPOSITORY" --head "$branch" --state open --json number --jq length)
+            echo "$branch: $count open pull request(s)"
+            [ "$count" -ge 1 ]
+          done
+
+      - name: Check each pull request targets the branch below it
+        id: check-bases
+        continue-on-error: true
+        run: |
+          expect() {
+            base=$(gh pr list --repo "$ISSUE_REPOSITORY" --head "$1" --state open --json baseRefName --jq '.[0].baseRefName')
+            echo "$1 targets $base (expected $2)"
+            [ "$base" = "$2" ]
+          }
+          expect feat/recipe-model main
+          expect feat/recipe-scaling feat/recipe-model
+          expect feat/recipe-cli feat/recipe-scaling
+
+      - name: Check the pull requests are linked as a stack
+        id: check-stack
+        continue-on-error: true
+        run: |
+          # gh stack submit links the pull requests after creating them, so retry for a minute
+          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            gh api -H "X-GitHub-Api-Version: 2026-03-10" "repos/$ISSUE_REPOSITORY/stacks" > stacks.json
+            if jq -e '
+              any(.[]; ([.pull_requests[].head.ref] | contains(["feat/recipe-model","feat/recipe-scaling","feat/recipe-cli"])))
+            ' stacks.json > /dev/null; then
+              exit 0
+            fi
+            echo "No linked stack yet (attempt $attempt), waiting"
+            sleep 5
+          done
+          exit 1
+
+      - name: Update comment - step results
+        uses: GrantBirki/comment@v2.1.1
+        with:
+          repository: ${{ env.ISSUE_REPOSITORY }}
+          issue-number: ${{ env.ISSUE_NUMBER }}
+          comment-id: ${{ steps.find-last-comment.outputs.comment-id }}
+          edit-mode: replace
+          file: exercise-toolkit/markdown-templates/step-feedback/step-results-table.md
+          vars: |
+            step_number: 3
+            results_table:
+              - description: "Opened pull requests for feat/recipe-model, feat/recipe-scaling, and feat/recipe-cli"
+                passed: ${{ steps.check-open-prs.outcome == 'success' }}
+              - description: "Each pull request targets the branch below it, with the first one on main"
+                passed: ${{ steps.check-bases.outcome == 'success' }}
+              - description: "The three pull requests are linked as a stack on GitHub"
+                passed: ${{ steps.check-stack.outcome == 'success' }}
+
+      # END: Check practical exercise
+
+      - name: Fail job if not all checks passed
+        if: contains(steps.*.outcome, 'failure')
+        run: exit 1
+
+  post_next_step_content:
+    name: Post next step content
+    needs: [find_exercise, check_step_work]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # checkout step content
+      actions: write # disable this step and enable the next one
+      issues: write # post step content and progress comments
+    env:
+      ISSUE_REPOSITORY: ${{ github.repository }}
+      ISSUE_NUMBER: ${{ needs.find_exercise.outputs.issue-number }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Get response templates
+        uses: actions/checkout@v6
+        with:
+          repository: skills/exercise-toolkit
+          path: exercise-toolkit
+          ref: v0.9.3
+
+      - name: Find existing step 4 comment
+        id: find-step-4
+        uses: peter-evans/find-comment@v4
+        with:
+          repository: ${{ env.ISSUE_REPOSITORY }}
+          issue-number: ${{ env.ISSUE_NUMBER }}
+          comment-author: "github-actions[bot]"
+          body-includes: "## Step 4: Merge from the bottom up"
+
+      - name: Create comment - step finished
+        if: steps.find-step-4.outputs.comment-id == ''
+        uses: GrantBirki/comment@v2.1.1
+        with:
+          repository: ${{ env.ISSUE_REPOSITORY }}
+          issue-number: ${{ env.ISSUE_NUMBER }}
+          file: exercise-toolkit/markdown-templates/step-feedback/step-finished-prepare-next-step.md
+          vars: |
+            next_step_number: 4
+
+      - name: Create comment - add step content
+        if: steps.find-step-4.outputs.comment-id == ''
+        uses: GrantBirki/comment@v2.1.1
+        with:
+          repository: ${{ env.ISSUE_REPOSITORY }}
+          issue-number: ${{ env.ISSUE_NUMBER }}
+          file: ${{ env.STEP_4_FILE }}
+
+      - name: Create comment - watching for progress
+        if: steps.find-step-4.outputs.comment-id == ''
+        uses: GrantBirki/comment@v2.1.1
+        with:
+          repository: ${{ env.ISSUE_REPOSITORY }}
+          issue-number: ${{ env.ISSUE_NUMBER }}
+          file: exercise-toolkit/markdown-templates/step-feedback/watching-for-progress.md
+
+      - name: Disable current workflow and enable next one
+        run: |
+          gh workflow disable "${{github.workflow}}"
+          gh workflow enable "Step 4"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
