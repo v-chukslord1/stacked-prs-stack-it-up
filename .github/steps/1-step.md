@@ -1,6 +1,6 @@
-## Step 1: Install the tool and plan your stack
+## Step 1: Understand stacks and plan your layers
 
-Your team lead dropped a feature request in your lap: a recipe scaler. Rather than one giant pull request, you'll ship it as a stack. First, let's get set up and plan.
+Your team lead dropped a feature request in your lap: a recipe scaler. Rather than one giant pull request, you'll ship it as a stack, all from the GitHub website. First, let's learn what a stack is and plan the layers.
 
 ### 📖 Theory: What is a stack?
 
@@ -9,35 +9,11 @@ A stack is a series of two or more pull requests in the same repository. The bot
 #### References
 
 - [About stacked pull requests](https://docs.github.com/en/pull-requests/get-started/about-stacked-prs)
-- [Quickstart for stacked pull requests](https://docs.github.com/en/pull-requests/get-started/stacked-prs-quickstart)
+- [Creating stacked pull requests](https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/creating-stacked-pull-requests)
 
-### ⌨️ Activity: Install the extension and plan your layers
+### ⌨️ Activity: Read the spec and plan your layers
 
-1. Check that your tools are new enough. You need GitHub CLI 2.90.0 or later and Git 2.36 or later.
-
-   > ![Static Badge](https://img.shields.io/badge/Terminal-text?logo=gnometerminal&labelColor=0969da&color=ddf4ff)
-   >
-   > ```bash
-   > gh --version && git --version
-   > ```
-
-1. Clone your copy of the exercise.
-
-   > ![Static Badge](https://img.shields.io/badge/Terminal-text?logo=gnometerminal&labelColor=0969da&color=ddf4ff)
-   >
-   > ```bash
-   > gh repo clone {{ full_repo_name }} && cd "$(basename {{ full_repo_name }})"
-   > ```
-
-1. Install the `gh stack` extension.
-
-   > ![Static Badge](https://img.shields.io/badge/Terminal-text?logo=gnometerminal&labelColor=0969da&color=ddf4ff)
-   >
-   > ```bash
-   > gh extension install github/gh-stack
-   > ```
-
-1. Read `FEATURE_SPEC.md` in your clone.
+1. Open [`FEATURE_SPEC.md`](https://github.com/{{ full_repo_name }}/blob/main/FEATURE_SPEC.md) in your copy of the repository and read the three layers it describes.
 
 1. Reply to this issue with a comment that lists your plan, one line per layer. Start each line with `-` or a number, and name the branch and what it contains.
 
@@ -49,9 +25,8 @@ A stack is a series of two or more pull requests in the same repository. The bot
 <details>
 <summary>Having trouble? 🤷</summary><br/>
 
-- If `gh --version` is older than 2.90.0, upgrade GitHub CLI and run the check again.
-- If the extension is already installed, run `gh extension upgrade stack`.
-- If `gh` asks you to sign in, run `gh auth login`.
 - Your comment needs at least three lines that start with `-`, `*`, or a number such as `1.`.
+- Mention what the first layer contains, such as the `Recipe` model or dataclass.
+- If the link doesn't open, go to the **Code** tab of your repository and select `FEATURE_SPEC.md`.
 
 </details>

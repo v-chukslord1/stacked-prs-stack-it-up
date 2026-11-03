@@ -101,7 +101,7 @@ jobs:
         id: check-stack
         continue-on-error: true
         run: |
-          # gh stack submit links the pull requests after creating them, so retry for a minute
+          # the stack is linked just after the pull requests open, so retry for a minute
           for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
             gh api -H "X-GitHub-Api-Version: 2026-03-10" "repos/$ISSUE_REPOSITORY/stacks" > stacks.json
             if jq -e '

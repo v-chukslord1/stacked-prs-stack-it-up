@@ -1,23 +1,22 @@
 # Stack It Up – Ship a Big Feature as Small, Reviewable Pull Requests
 
-_Break one large feature into a stack of small, dependent pull requests with `gh stack`, then merge it from the bottom up._
+_Break one large feature into a stack of small, dependent pull requests on the GitHub website, then merge it from the bottom up._
 
 ## Welcome
 
 - **Who is this for**: Developers comfortable with Git branches and pull requests.
-- **What you'll learn**: What a stack is, how to build one with `gh stack init`, `add`, `push`, `submit`, and `view`, and how bottom-up merging works.
+- **What you'll learn**: What a stack is, how to build one from the GitHub website with branches and pull requests, and how bottom-up merging works.
 - **What you'll build**: A three-pull-request stack for a small Python "recipe scaler" app.
 - **Prerequisites**:
-  - [GitHub CLI](https://cli.github.com/) 2.90.0 or later, signed in with `gh auth login`
-  - Git 2.36 or later
+  - A GitHub account. Everything happens in your browser, so no local setup is needed.
 
 - **How long**: This exercise takes less than 30 minutes to complete.
 
 In this exercise, you will:
 
-1. Install the `gh stack` extension and plan a three-layer stack.
+1. Learn what a stack is and plan three layers.
 1. Build the first two layers as dependent branches.
-1. Add a third layer and submit all three as linked pull requests.
+1. Add a third layer and link all three pull requests as a stack.
 1. Merge the stack from the bottom up.
 
 ### How to start this exercise

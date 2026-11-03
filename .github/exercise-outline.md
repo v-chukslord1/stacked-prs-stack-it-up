@@ -2,7 +2,7 @@
 
 ## Summary
 
-Learners split one feature into three stacked PRs with `gh stack`, then merge the stack from the bottom up.
+Learners split one feature into three stacked PRs in the GitHub web UI, then merge the stack from the bottom up.
 
 ## Exercise identity
 
@@ -15,16 +15,16 @@ Learners split one feature into three stacked PRs with `gh stack`, then merge th
 ## Welcome block
 
 - **Who is this for**: Developers comfortable with branches and pull requests.
-- **What you'll learn**: What a stack is, `gh stack init/add/push/submit/view`, how base branches chain, and how bottom-up merging works.
+- **What you'll learn**: What a stack is, creating stacks from the GitHub website, how base branches chain, and how bottom-up merging works.
 - **What you'll build**: A 3-PR stack for a small Python "recipe scaler" app.
-- **Prerequisites**: GitHub CLI 2.90.0 or later, Git 2.36 or later, `gh auth login` completed.
+- **Prerequisites**: A GitHub account. No local tools needed.
 - **How long**: about 30 minutes.
 
 ## Learning objectives
 
 - Explain how a stack is structured (trunk, base chaining, dependency direction).
-- Create and submit a stack with `gh stack`.
-- Read a stack's state with `gh stack view` and the stack map on GitHub.
+- Create a stack from the website by chaining PR base branches and using Create stack.
+- Read a stack with the stack icon and stack map on GitHub.
 - Merge part or all of a stack from the bottom up.
 
 ## Scenario
@@ -33,27 +33,27 @@ A team lead wants a "recipe scaler" feature. A single large PR would stall in re
 
 ## Learner journey
 
-### Step 1: Install the tool and plan your stack
+### Step 1: Understand stacks and plan your layers
 
 - Theory: what a stack is (bottom PR targets trunk, each later PR targets the branch below, dependencies go in lower layers).
-- Activity: clone the copy, install `gh extension install github/gh-stack`, comment a 3-layer plan on the Step 1 issue.
+- Activity: read `FEATURE_SPEC.md` and comment a 3-layer plan on the Step 1 issue.
 - Actions Trigger: `issue_comment`
 - Grading-Check: graded; the comment lists at least 3 layers.
 - Learner artifact: a comment with the layered plan.
 
 ### Step 2: Build the first two layers
 
-- Theory: `gh stack init`, `gh stack add`, `gh stack add -Am`, dependency rule.
+- Theory: branches as layers, created from the branch below, dependency rule.
 - Activity 1: layer 1 `feat/recipe-model` (`recipe.py`).
-- Activity 2: layer 2 `feat/recipe-scaling` (`scale.py`), `gh stack view`, `gh stack push`.
-- Actions Trigger: `push` to `feat/**` (decided in build round 1: replaces `workflow_dispatch`, because `gh stack push` already pushes the branches).
+- Activity 2: layer 2 `feat/recipe-scaling` (`scale.py`), created from `feat/recipe-model` in the branch dropdown.
+- Actions Trigger: `push` to `feat/**` (web commits push to the branches).
 - Grading-Check: graded; both branches exist on the remote with their files, and the scaling branch is ahead of the model branch.
 - Learner artifact: two pushed, ordered branches.
 
 ### Step 3: Add the top layer and submit the stack
 
-- Theory: `gh stack submit`, the stack icon and stack map, rules and CI run for every layer.
-- Activity: layer 3 `feat/recipe-cli` (`cli.py`), `gh stack submit`, comment on the Step 3 issue which branch each PR targets.
+- Theory: creating a stack in the UI, the stack icon and stack map, rules and CI run for every layer.
+- Activity: layer 3 `feat/recipe-cli` (`cli.py`), open three PRs with chained bases and Create stack, comment which branch each PR targets.
 - Actions Trigger: `pull_request` (opened, only for head `feat/recipe-cli`), plus `issue_comment` on the Step 3 issue as a retry
 - Grading-Check: graded; the stacks API returns one stack of three PRs with the expected branches on `main`.
 - Learner artifact: a 3-PR linked stack.
@@ -86,6 +86,6 @@ A team lead wants a "recipe scaler" feature. A single large PR would stall in re
 
 ## Risks and open questions
 
-- Stacked PRs are new; the stacks REST API (`2026-03-10`) and `gh stack` behavior may change.
-- `gh stack` runs locally, so the exercise cannot run entirely in the browser.
+- Stacked PRs are new; the stacks REST API (`2026-03-10`) and website stack-creation behavior may change.
+- The exercise is UI-first; the `gh stack` CLI is only mentioned as optional next reading.
 - Step 4 depends on the learner repository's merge settings.

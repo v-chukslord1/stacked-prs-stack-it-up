@@ -1,87 +1,53 @@
 ## Step 2: Build the first two layers
 
-Plan approved. Now you'll build the bottom two layers of the stack, each on its own branch.
+Plan approved. Now you'll build the bottom two layers of the stack on GitHub, each on its own branch.
 
 ### 📖 Theory: Branches as layers
 
-`gh stack init` starts tracking a stack and creates the first branch. `gh stack add <name>` adds the next branch on top of the current one. The key rule: code may only depend on the same branch or a lower one. `gh stack add -Am "message"` stages everything, commits, and creates the next branch in one step.
+Each layer of a stack lives on its own branch, and each new branch is created from the branch below it. The key rule: code may only depend on the same branch or a lower one. That's why you create `feat/recipe-scaling` from `feat/recipe-model`, not from `main`: `scale.py` needs `recipe.py`, which only exists on the lower branch.
 
 #### References
 
-- [Stacked pull requests CLI commands](https://docs.github.com/en/pull-requests/reference/stacked-prs-cli-commands)
+- [About stacked pull requests](https://docs.github.com/en/pull-requests/get-started/about-stacked-prs)
+- [Creating stacked pull requests](https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/creating-stacked-pull-requests)
 
 ### ⌨️ Activity 1: Layer 1, the data model
 
-1. Start the stack and name the first branch `feat/recipe-model`.
+1. On the **Code** tab of your repository, select the branch dropdown, type `feat/recipe-model`, and select **Create branch feat/recipe-model from main**.
 
-   > ![Static Badge](https://img.shields.io/badge/Terminal-text?logo=gnometerminal&labelColor=0969da&color=ddf4ff)
-   >
-   > ```bash
-   > gh stack init
-   > ```
+1. On the new branch, select **Add file** > **Create new file**. Name it `recipe.py` and add a `Recipe` dataclass with `name`, `servings`, and `ingredients` fields, as described in `FEATURE_SPEC.md`.
 
-1. Create `recipe.py` with a `Recipe` dataclass that has `name`, `servings`, and `ingredients` fields, as described in `FEATURE_SPEC.md`.
-
-1. Commit your work.
-
-   > ![Static Badge](https://img.shields.io/badge/Terminal-text?logo=gnometerminal&labelColor=0969da&color=ddf4ff)
-   >
-   > ```bash
-   > git add recipe.py && git commit -m "Add Recipe model"
-   > ```
+1. Select **Commit changes...**, choose **Commit directly to the `feat/recipe-model` branch**, and commit.
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>
 
-- Run `gh stack init` from inside your clone of the repository.
-- If the commit reports nothing to commit, make sure `recipe.py` is saved in the repository root.
-- If you named the branch differently, create it again with the exact name `feat/recipe-model`.
+- Check that the branch name is exactly `feat/recipe-model`, and that the branch dropdown shows it before you add the file.
+- If the commit dialog offers a new branch instead, choose to commit directly to `feat/recipe-model`.
+- Put `recipe.py` in the repository root, not in a folder.
 
 </details>
 
 ### ⌨️ Activity 2: Layer 2, the scaling logic
 
-1. Add the next branch on top of the stack.
+1. Switch to the `feat/recipe-model` branch using the branch dropdown.
 
-   > ![Static Badge](https://img.shields.io/badge/Terminal-text?logo=gnometerminal&labelColor=0969da&color=ddf4ff)
-   >
-   > ```bash
-   > gh stack add feat/recipe-scaling
-   > ```
+1. Open the branch dropdown again, type `feat/recipe-scaling`, and select **Create branch feat/recipe-scaling from feat/recipe-model**.
 
-1. Create `scale.py` with a `scale(recipe, factor)` function that imports `Recipe` from `recipe.py` and returns a new `Recipe` with every quantity multiplied by `factor`.
+   > [!IMPORTANT]
+   > The new branch must start from `feat/recipe-model`, not `main`. That is what makes it the next layer of the stack.
 
-1. Commit your work.
+1. On the `feat/recipe-scaling` branch, select **Add file** > **Create new file**. Name it `scale.py` and add a `scale(recipe, factor)` function that imports `Recipe` from `recipe` and returns a new `Recipe` with every quantity multiplied by `factor`.
 
-   > ![Static Badge](https://img.shields.io/badge/Terminal-text?logo=gnometerminal&labelColor=0969da&color=ddf4ff)
-   >
-   > ```bash
-   > git add scale.py && git commit -m "Add recipe scaling"
-   > ```
-
-1. Check the shape of your stack. Both branches should appear in order.
-
-   > ![Static Badge](https://img.shields.io/badge/Terminal-text?logo=gnometerminal&labelColor=0969da&color=ddf4ff)
-   >
-   > ```bash
-   > gh stack view
-   > ```
-
-1. Push every branch in the stack.
-
-   > ![Static Badge](https://img.shields.io/badge/Terminal-text?logo=gnometerminal&labelColor=0969da&color=ddf4ff)
-   >
-   > ```bash
-   > gh stack push
-   > ```
+1. Commit directly to the `feat/recipe-scaling` branch.
 
 1. Wait a moment for Mona to check your work, provide feedback, and share the next lesson.
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>
 
-- If `scale.py` can't import `recipe`, check that you ran `gh stack add` first, so `recipe.py` from layer 1 is part of this branch.
-- If `gh stack view` shows the branches in the wrong order, rerun it and check that you added the second branch while on the first.
-- If the push fails, confirm you have push access to your copy of the repository.
+- If you can't see `recipe.py` on `feat/recipe-scaling`, the branch was created from `main`. Delete it from the branch list and create it again from `feat/recipe-model`.
+- Make sure `scale.py` contains `from recipe import Recipe`.
+- Confirm your last commit went to `feat/recipe-scaling`, not `main`.
 
 </details>
