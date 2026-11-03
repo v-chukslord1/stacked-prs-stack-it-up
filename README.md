@@ -1,4 +1,4 @@
-# Stack It Up: Ship a Big Feature as Small, Reviewable Pull Requests
+# Stack It Up – Ship a Big Feature as Small, Reviewable Pull Requests
 
 _Break one large feature into a stack of small, dependent pull requests with `gh stack`, then merge it from the bottom up._
 
@@ -24,7 +24,7 @@ In this exercise, you will:
 
 Simply copy the exercise to your account, then give your favorite Octocat (Mona) **about 20 seconds** to prepare the first lesson, then **refresh the page**.
 
-[![](https://img.shields.io/badge/Copy%20Exercise-%E2%86%92-1f883d?style=for-the-badge&logo=github&labelColor=197935)](https://github.com/new?template_owner=v-chukslord1&template_name=stacked-prs-stack-it-up&owner=%40me&name=skills-stacked-prs-stack-it-up&description=Exercise:+Stack+It+Up:+Ship+a+Big+Feature+as+Small,+Reviewable+Pull+Requests&visibility=public)
+[![](https://img.shields.io/badge/Copy%20Exercise-%E2%86%92-1f883d?style=for-the-badge&logo=github&labelColor=197935)](https://github.com/new?template_owner=v-chukslord1&template_name=stacked-prs-stack-it-up&owner=%40me&name=skills-stacked-prs-stack-it-up&description=Exercise:+Stack+It+Up+%E2%80%93+Ship+a+Big+Feature+as+Small,+Reviewable+Pull+Requests&visibility=public)
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>

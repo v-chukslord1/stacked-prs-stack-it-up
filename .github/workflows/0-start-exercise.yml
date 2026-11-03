@@ -22,7 +22,7 @@ jobs:
       issues: write # create the exercise issue
     uses: skills/exercise-toolkit/.github/workflows/start-exercise.yml@v0.9.3
     with:
-      exercise-title: "Stack It Up: Ship a Big Feature as Small, Reviewable Pull Requests"
+      exercise-title: "Stack It Up – Ship a Big Feature as Small, Reviewable Pull Requests"
       intro-message: "Break one large feature into a stack of small, dependent pull requests with gh stack, then merge it from the bottom up."
 
   post_next_step_content:

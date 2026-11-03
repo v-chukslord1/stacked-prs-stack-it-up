@@ -154,4 +154,4 @@ jobs:
     uses: skills/exercise-toolkit/.github/workflows/finish-exercise.yml@v0.9.3
     with:
       issue-url: ${{ needs.find_exercise.outputs.issue-url }}
-      exercise-title: "Stack It Up: Ship a Big Feature as Small, Reviewable Pull Requests"
+      exercise-title: "Stack It Up – Ship a Big Feature as Small, Reviewable Pull Requests"

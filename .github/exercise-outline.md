@@ -1,4 +1,4 @@
-# Stack It Up: Ship a Big Feature as Small, Reviewable Pull Requests
+# Stack It Up – Ship a Big Feature as Small, Reviewable Pull Requests
 
 ## Summary
 
@@ -6,7 +6,7 @@ Learners split one feature into three stacked PRs with `gh stack`, then merge th
 
 ## Exercise identity
 
-- **Title**: Stack It Up: Ship a Big Feature as Small, Reviewable Pull Requests
+- **Title**: Stack It Up – Ship a Big Feature as Small, Reviewable Pull Requests
 - **Repository name**: `stacked-prs-stack-it-up` (approved)
 - **Learner copy name**: `skills-stacked-prs-stack-it-up`
 - **Target owner**: decide at publish
