@@ -73,10 +73,13 @@ jobs:
           echo "Found $count list lines"
           [ "$count" -ge 3 ]
 
-      - name: Check the comment names the model layer
+      - name: Check the first layer is the model
         id: check-model
         continue-on-error: true
-        run: printf '%s\n' "$COMMENT_BODY" | grep -Ei 'model|dataclass' > /dev/null
+        run: |
+          first=$(printf '%s\n' "$COMMENT_BODY" | grep -E -m1 '^[[:space:]]*([-*]|[0-9]+\.)[[:space:]]+[^[:space:]]' || true)
+          echo "First layer: $first"
+          printf '%s\n' "$first" | grep -Ei 'model|dataclass|recipe\.py' > /dev/null
 
       - name: Update comment - step results
         uses: GrantBirki/comment@v2.1.1
@@ -91,7 +94,7 @@ jobs:
             results_table:
               - description: "Your comment lists at least 3 layers, one per line starting with - or a number"
                 passed: ${{ steps.check-layers.outcome == 'success' }}
-              - description: "Your comment mentions the Recipe model layer"
+              - description: "Your first (bottom) layer is the Recipe model, because everything else depends on it"
                 passed: ${{ steps.check-model.outcome == 'success' }}
 
       # END: Check practical exercise

@@ -36,7 +36,7 @@ A team lead wants a "recipe scaler" feature. A single large PR would stall in re
 ### Step 1: Understand stacks and plan your layers
 
 - Theory: what a stack is (bottom PR targets trunk, each later PR targets the branch below, dependencies go in lower layers).
-- Activity: read `FEATURE_SPEC.md` and comment a 3-layer plan on the Step 1 issue.
+- Activity: order the unordered work items in `FEATURE_SPEC.md` by dependency and comment a 3-layer plan, bottom first on the Step 1 issue.
 - Actions Trigger: `issue_comment`
 - Grading-Check: graded; the comment lists at least 3 layers.
 - Learner artifact: a comment with the layered plan.
