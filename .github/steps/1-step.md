@@ -13,7 +13,7 @@ A stack is a series of two or more pull requests in the same repository. The bot
 
 ### ⌨️ Activity: Plan your pull request stack
 
-Your team has divided the recipe scaler feature into three pieces of work. Before creating branches or pull requests, you need to determine the order in which they should be developed.
+Your team has divided the recipe scaler feature into three pieces of work. Before creating branches or pull requests, you need to determine the order in which they should be developed. This shows you can identify dependencies between pieces of work and organize them into a valid stacked pull request structure.
 
 1. Open [`FEATURE_SPEC.md`](https://github.com/{{ full_repo_name }}/blob/main/FEATURE_SPEC.md) and read the descriptions of the three pieces of work.
 
@@ -39,8 +39,6 @@ Your team has divided the recipe scaler feature into three pieces of work. Befor
    > Example of one line: `1. feat/example: Description of the foundational work.`
 
 1. Wait a moment for Mona to check your work, provide feedback, and share the next lesson.
-
-By completing this activity, you show that you can identify dependencies between pieces of work and organize them into a valid stacked pull request structure.
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>
