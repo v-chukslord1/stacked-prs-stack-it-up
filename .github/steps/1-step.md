@@ -11,18 +11,36 @@ A stack is a series of two or more pull requests in the same repository. The bot
 - [About stacked pull requests](https://docs.github.com/en/pull-requests/get-started/about-stacked-prs)
 - [Creating stacked pull requests](https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/creating-stacked-pull-requests)
 
-### ⌨️ Activity: Order the work into layers
+### ⌨️ Activity: Plan your pull request stack
 
-1. Open [`FEATURE_SPEC.md`](https://github.com/{{ full_repo_name }}/blob/main/FEATURE_SPEC.md) and read the three pieces of work. They are listed in no particular order.
+Your team has divided the recipe scaler feature into three pieces of work. Before creating branches or pull requests, you need to determine the order in which they should be developed.
 
-1. Decide which piece everything else depends on, then which depends on that, and so on. The piece with no dependencies is the bottom layer.
+1. Open [`FEATURE_SPEC.md`](https://github.com/{{ full_repo_name }}/blob/main/FEATURE_SPEC.md) and read the descriptions of the three pieces of work.
 
-1. Reply to this issue with a comment that lists your plan from the bottom layer to the top, one line per layer. Start each line with a number, then the branch name and what it contains.
+1. Identify what each piece requires from the others. For example, the scaling functionality needs a recipe model to work with, while the command-line interface needs both the model and the scaling functionality.
+
+1. Arrange the three pieces into a dependency order:
+
+   - **Bottom layer:** the foundational piece that has no dependencies on the other pieces.
+   - **Middle layer:** the piece that depends on the bottom layer.
+   - **Top layer:** the piece that depends on the layers below it.
+
+1. Find the corresponding branch name for each piece in `FEATURE_SPEC.md`.
+
+1. Reply to this issue with your proposed stack, listing the layers from bottom to top, one line per layer, in this format:
+
+   ```text
+   1. `branch-name`: Briefly describe what this layer contains.
+   2. `branch-name`: Briefly describe what this layer contains.
+   3. `branch-name`: Briefly describe what this layer contains.
+   ```
 
    > [!TIP]
-   > For example: `1. feat/your-branch: what this layer holds`. Use the branch names from the spec.
+   > Example of one line: `1. feat/example: Description of the foundational work.`
 
 1. Wait a moment for Mona to check your work, provide feedback, and share the next lesson.
+
+By completing this activity, you show that you can identify dependencies between pieces of work and organize them into a valid stacked pull request structure.
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>
