@@ -46,7 +46,7 @@ A team lead wants a "recipe scaler" feature. A single large PR would stall in re
 - Theory: branches as layers, created from the branch below, dependency rule.
 - Activity 1: layer 1 `feat/recipe-model` (`recipe.py`).
 - Activity 2: layer 2 `feat/recipe-scaling` (`scale.py`), created from `feat/recipe-model` in the branch dropdown.
-- Actions Trigger: `push` to `feat/**` (web commits push to the branches).
+- Actions Trigger: `push` to `feat/recipe-scaling` only, skipping branch creation, so grading waits for the layer 2 commit.
 - Grading-Check: graded; both branches exist on the remote with their files, and the scaling branch is ahead of the model branch.
 - Learner artifact: two pushed, ordered branches.
 

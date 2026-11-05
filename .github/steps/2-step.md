@@ -1,6 +1,6 @@
 ## Step 2: Build the first two layers
 
-Plan approved. Now you'll build the bottom two layers of the stack on GitHub, each on its own branch.
+Plan approved. Now you'll build the bottom two layers of the stack on GitHub, each on its own branch. Mona only checks your work after you commit `scale.py` to the second branch, so take your time with both layers.
 
 ### 📖 Theory: Branches as layers
 
@@ -13,7 +13,7 @@ Each layer of a stack lives on its own branch, and each new branch is created fr
 
 ### ⌨️ Activity 1: Layer 1, the data model
 
-1. On the **Code** tab of your repository, select the branch dropdown, type `feat/recipe-model`, and select **Create branch feat/recipe-model from main**.
+1. Open the [**Code** tab](https://github.com/{{ full_repo_name }}) of your repository, select the branch dropdown, type `feat/recipe-model`, and select **Create branch feat/recipe-model from main**.
 
 1. On the new branch, select **Add file** > **Create new file**. Name it `recipe.py` and add a `Recipe` dataclass with `name`, `servings`, and `ingredients` fields, as described in `FEATURE_SPEC.md`.
 
@@ -39,7 +39,7 @@ Each layer of a stack lives on its own branch, and each new branch is created fr
 
 1. On the `feat/recipe-scaling` branch, select **Add file** > **Create new file**. Name it `scale.py` and add a `scale(recipe, factor)` function that imports `Recipe` from `recipe` and returns a new `Recipe` with every quantity multiplied by `factor`.
 
-1. Commit directly to the `feat/recipe-scaling` branch.
+1. Commit directly to the `feat/recipe-scaling` branch. This commit is what tells Mona you're ready, so make sure both layers are finished first.
 
 1. Wait a moment for Mona to check your work, provide feedback, and share the next lesson.
 
