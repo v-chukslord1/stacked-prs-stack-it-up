@@ -14,7 +14,9 @@ Pull requests in a stack merge from the bottom up. You can merge the whole stack
 
 1. Open the pull request for `feat/recipe-scaling`, the middle layer.
 
-1. Merge it using the merge button.
+1. In the merge box, find the stack map, then select **Merge stack**.
+
+   ![The stack map in the merge box listing the three pull requests above main](https://github.com/{{ full_repo_name }}/blob/main/.github/images/4-stack-map.png?raw=true)
 
 1. Look at the other two pull requests. The pull request for `feat/recipe-model` is merged along with it, and the pull request for `feat/recipe-cli` is still open and now targets `main`.
 
@@ -26,7 +28,7 @@ Pull requests in a stack merge from the bottom up. You can merge the whole stack
 <summary>Having trouble? 🤷</summary><br/>
 
 - If you don't see feedback after merging the middle pull request, that's expected. Mona checks your work once the `feat/recipe-cli` pull request is merged.
-- If the merge button is disabled, check that required checks pass. Every layer must meet the same rules as `main`.
+- If **Merge stack** is disabled, check that required checks pass. Every layer must meet the same rules as `main`.
 - If the top pull request still shows the old base branch, refresh the page. The automatic rebase can take a few seconds.
 - If a pull request shows merge conflicts, make sure you merged from the bottom up.
 

@@ -15,9 +15,17 @@ Each layer of a stack lives on its own branch, and each new branch is created fr
 
 1. Open the [**Code** tab](https://github.com/{{ full_repo_name }}) of your repository, select the branch dropdown, type `feat/recipe-model`, and select **Create branch feat/recipe-model from main**.
 
-1. On the new branch, select **Add file** > **Create new file**. Name it `recipe.py` and add a `Recipe` dataclass with `name`, `servings`, and `ingredients` fields, as described in `FEATURE_SPEC.md`.
+   ![The branch dropdown with feat/recipe-model typed in and the Create branch feat/recipe-model from main option shown](https://github.com/{{ full_repo_name }}/blob/main/.github/images/2-branch-dropdown-create.png?raw=true)
+
+1. On the new branch, select **Add file** > **Create new file**.
+
+   ![The Add file menu open, showing Create new file and Upload files](https://github.com/{{ full_repo_name }}/blob/main/.github/images/2-add-file-menu.png?raw=true)
+
+   Name the file `recipe.py` add a `Recipe` dataclass with `name`, `servings`, and `ingredients` fields, as described in `FEATURE_SPEC.md`.
 
 1. Select **Commit changes...**, choose **Commit directly to the `feat/recipe-model` branch**, and commit.
+
+   ![The Commit changes dialog with Commit directly to the branch selected](https://github.com/{{ full_repo_name }}/blob/main/.github/images/2-commit-dialog.png?raw=true)
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>
