@@ -23,7 +23,7 @@ Learners split one feature into three stacked PRs in the GitHub web UI, then mer
 ## Learning objectives
 
 - Explain how a stack is structured (trunk, base chaining, dependency direction).
-- Create a stack from the website by chaining PR base branches and using Create stack.
+- Create a stack from the website by chaining PR base branches and confirming the Preview stack banner.
 - Read a stack with the stack icon and stack map on GitHub.
 - Merge part or all of a stack from the bottom up.
 
@@ -53,8 +53,8 @@ A team lead wants a "recipe scaler" feature. A single large PR would stall in re
 ### Step 3: Add the top layer and submit the stack
 
 - Theory: creating a stack in the UI, the stack icon and stack map, rules and CI run for every layer.
-- Activity: layer 3 `feat/recipe-cli` (`cli.py`), open three PRs with chained bases and Create stack, comment which branch each PR targets.
-- Actions Trigger: `pull_request` (opened, only for head `feat/recipe-cli`), plus `issue_comment` on the Step 3 issue as a retry
+- Activity: layer 3 `feat/recipe-cli` (`cli.py`), open three PRs with chained bases and confirm the Preview stack banner, comment which branch each PR targets.
+- Actions Trigger: `issue_comment` on the Step 3 issue (the learner comments after confirming the stack; later comments retry)
 - Grading-Check: graded; the stacks API returns one stack of three PRs with the expected branches on `main`.
 - Learner artifact: a 3-PR linked stack.
 

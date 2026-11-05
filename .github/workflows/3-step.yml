@@ -1,9 +1,6 @@
 name: Step 3
 
 on:
-  pull_request:
-    types:
-      - opened
   issue_comment:
     types:
       - created
@@ -20,9 +17,7 @@ env:
 jobs:
   find_exercise:
     name: Find Exercise Issue
-    if: |
-      (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'feat/recipe-cli') ||
-      (github.event_name == 'issue_comment' && github.event.issue.pull_request == null && github.event.comment.user.type != 'Bot')
+    if: github.event.issue.pull_request == null && github.event.comment.user.type != 'Bot'
     permissions:
       issues: read # locate the exercise issue
     uses: skills/exercise-toolkit/.github/workflows/find-exercise-issue.yml@v0.9.3
@@ -31,9 +26,7 @@ jobs:
     name: Check step work
     runs-on: ubuntu-latest
     needs: [find_exercise]
-    if: |
-      github.event_name == 'pull_request' ||
-      needs.find_exercise.outputs.issue-number == github.event.issue.number
+    if: needs.find_exercise.outputs.issue-number == github.event.issue.number
     permissions:
       contents: read # read the exercise templates
       pull-requests: read # read pull requests and stacks
