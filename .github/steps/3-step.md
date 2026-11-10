@@ -15,7 +15,19 @@ You create a stack on GitHub by opening a pull request for each branch, setting 
 
 1. Switch to the `feat/recipe-scaling` branch, then create a branch named `feat/recipe-cli` from it using the branch dropdown.
 
-1. On `feat/recipe-cli`, create `cli.py` with a script that builds a sample recipe, scales it with `scale`, and prints the result. Commit it directly to `feat/recipe-cli`.
+1. On `feat/recipe-cli`, select **Add file** > **Create new file** and name it `cli.py`. This file shows the whole recipe scaler working together: it builds a sample recipe, scales it, and prints the result. It depends on both layers below it. Copy this into the file, then commit it directly to `feat/recipe-cli`:
+
+   ```python
+   from recipe import Recipe
+   from scale import scale
+
+   pancakes = Recipe("Pancakes", 2, {"flour (cups)": 1, "milk (cups)": 1, "eggs": 1})
+   bigger = scale(pancakes, 2)
+
+   print(f"{bigger.name} for {bigger.servings}:")
+   for ingredient, quantity in bigger.ingredients.items():
+       print(f"- {ingredient}: {quantity}")
+   ```
 
 1. Open the **Pull requests** tab and select **New pull request**. Set the base to `main` and compare to `feat/recipe-model`, then select **Create pull request**.
 

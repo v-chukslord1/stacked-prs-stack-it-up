@@ -21,7 +21,18 @@ Each layer of a stack lives on its own branch, and each new branch is created fr
 
    ![The Add file menu open, showing Create new file and Upload files](https://github.com/{{ full_repo_name }}/blob/main/.github/images/2-add-file-menu.png?raw=true)
 
-   Name the file `recipe.py` add a `Recipe` dataclass with `name`, `servings`, and `ingredients` fields, as described in `FEATURE_SPEC.md`.
+   Name the file `recipe.py`. This file defines what information a recipe contains: a name, how many servings it makes, and its ingredients with quantities. You don't need to know Python. Copy this into the file:
+
+   ```python
+   from dataclasses import dataclass
+
+
+   @dataclass
+   class Recipe:
+       name: str
+       servings: int
+       ingredients: dict  # ingredient name -> quantity
+   ```
 
 1. Select **Commit changes...**, choose **Commit directly to the `feat/recipe-model` branch**, and commit.
 
@@ -45,7 +56,19 @@ Each layer of a stack lives on its own branch, and each new branch is created fr
    > [!IMPORTANT]
    > The new branch must start from `feat/recipe-model`, not `main`. That is what makes it the next layer of the stack.
 
-1. On the `feat/recipe-scaling` branch, select **Add file** > **Create new file**. Name it `scale.py` and add a `scale(recipe, factor)` function that imports `Recipe` from `recipe` and returns a new `Recipe` with every quantity multiplied by `factor`.
+1. On the `feat/recipe-scaling` branch, select **Add file** > **Create new file**. Name it `scale.py`. This file holds the instructions for making a recipe bigger or smaller by multiplying every ingredient quantity. Notice that it imports `Recipe` from `recipe.py`, which only exists on the branch below. That import is the dependency that makes this a stack. Copy this into the file:
+
+   ```python
+   from recipe import Recipe
+
+
+   def scale(recipe, factor):
+       return Recipe(
+           name=recipe.name,
+           servings=recipe.servings * factor,
+           ingredients={name: qty * factor for name, qty in recipe.ingredients.items()},
+       )
+   ```
 
 1. Commit directly to the `feat/recipe-scaling` branch. This commit is what tells Mona you're ready, so make sure both layers are finished first.
 
