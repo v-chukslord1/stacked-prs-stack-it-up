@@ -73,13 +73,16 @@ jobs:
           echo "Found $count list lines"
           [ "$count" -ge 3 ]
 
-      - name: Check the first layer is the model
-        id: check-model
+      - name: Check the layers are in dependency order
+        id: check-order
         continue-on-error: true
         run: |
-          first=$(printf '%s\n' "$COMMENT_BODY" | grep -E -m1 '^[[:space:]]*([-*]|[0-9]+\.)[[:space:]]+[^[:space:]]' || true)
-          echo "First layer: $first"
-          printf '%s\n' "$first" | grep -Ei 'model|dataclass|recipe\.py' > /dev/null
+          lines=$(printf '%s\n' "$COMMENT_BODY" | grep -E '^[[:space:]]*([-*]|[0-9]+\.)[[:space:]]+[^[:space:]]' || true)
+          echo "$lines"
+          starts() { printf '%s\n' "$lines" | sed -n "$1p" | grep -Ei "^[[:space:]]*([-*]|[0-9]+\.)[[:space:]]+[\`*_]*$2" > /dev/null; }
+          starts 1 'recipe\.js'
+          starts 2 'scale\.js'
+          starts 3 'index\.html'
 
       - name: Update comment - step results
         uses: GrantBirki/comment@v2.1.1
@@ -94,8 +97,8 @@ jobs:
             results_table:
               - description: "Your comment lists at least 3 layers, one per line starting with - or a number"
                 passed: ${{ steps.check-layers.outcome == 'success' }}
-              - description: "Your first (bottom) layer is the Recipe model, because everything else depends on it"
-                passed: ${{ steps.check-model.outcome == 'success' }}
+              - description: "Your layers are in dependency order: recipe.js at the bottom, then scale.js, then index.html on top"
+                passed: ${{ steps.check-order.outcome == 'success' }}
 
       # END: Check practical exercise
 

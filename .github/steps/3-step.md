@@ -4,7 +4,18 @@ Two layers are pushed. One more layer, then you'll turn the branches into linked
 
 ### 📖 Theory: Creating and reading a stack
 
-You create a stack on GitHub by opening a pull request for each branch, setting each base branch to the branch below it. When GitHub sees a chain like that, it shows a **Preview stack** banner. The preview has a **Create stack** button that links them. Your first branch targets `main`, and each later branch targets the one below it. Once linked, each pull request shows a stack icon, and the merge box shows a stack map of every layer. Branch protection rules and CI that apply to `main` run for every pull request in the stack.
+A stack is a chain of pull requests. Each one targets the branch below it, and the first targets `main`:
+
+```mermaid
+flowchart TB
+  P3["PR 3: feat/recipe-page"] -->|targets| P2["PR 2: feat/recipe-scaling"]
+  P2 -->|targets| P1["PR 1: feat/recipe-model"]
+  P1 -->|targets| M["main"]
+```
+
+When GitHub sees a chain like this, it offers to link the pull requests as a stack. Once linked, each pull request shows a stack icon, and the merge box shows a stack map of every layer.
+
+![The stack map listing three pull requests above main, each marked Ready](https://github.com/{{ full_repo_name }}/blob/main/.github/images/4-stack-map.png?raw=true)
 
 #### References
 
@@ -13,52 +24,90 @@ You create a stack on GitHub by opening a pull request for each branch, setting 
 
 ### ⌨️ Activity: Add layer 3 and create the stack
 
-1. Switch to the `feat/recipe-scaling` branch, then create a branch named `feat/recipe-cli` from it using the branch dropdown.
+1. Switch to the `feat/recipe-scaling` branch, then create a branch named `feat/recipe-page` from it using the branch dropdown.
 
-1. On `feat/recipe-cli`, select **Add file** > **Create new file** and name it `cli.py`. This file shows the whole recipe scaler working together: it builds a sample recipe, scales it, and prints the result. It depends on both layers below it. Copy this into the file, then commit it directly to `feat/recipe-cli`:
+1. On `feat/recipe-page`, select **Add file** > **Create new file** and name it `index.html`. This is the web page that brings the recipe scaler together. It uses both layers below it. Copy this into the file, then commit it directly to `feat/recipe-page`:
 
-   ```python
-   from recipe import Recipe
-   from scale import scale
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+     <head>
+       <meta charset="utf-8" />
+       <title>Recipe scaler</title>
+       <style>
+         body { font-family: sans-serif; max-width: 40rem; margin: 2rem auto; }
+         .plate { display: inline-block; font-size: 2.5rem; margin: 0.25rem;
+                  padding: 0.5rem; border: 2px solid #999; border-radius: 50%; }
+         button { font-size: 1rem; margin-right: 0.5rem; }
+       </style>
+     </head>
+     <body>
+       <h1>Recipe scaler</h1>
+       <p>Scale the recipe:
+         <button data-factor="1">1x</button>
+         <button data-factor="2">2x</button>
+         <button data-factor="3">3x</button>
+         <button data-factor="4">4x</button>
+       </p>
+       <h2 id="title"></h2>
+       <div id="plates"></div>
+       <ul id="ingredients"></ul>
 
-   pancakes = Recipe("Pancakes", 2, {"flour (cups)": 1, "milk (cups)": 1, "eggs": 1})
-   bigger = scale(pancakes, 2)
+       <script type="module">
+         import { scale } from "./scale.js";
 
-   print(f"{bigger.name} for {bigger.servings}:")
-   for ingredient, quantity in bigger.ingredients.items():
-       print(f"- {ingredient}: {quantity}")
+         function show(factor) {
+           const scaled = scale(factor);
+           document.getElementById("title").textContent =
+             `${scaled.name} for ${scaled.servings}`;
+           document.getElementById("plates").innerHTML =
+             '<span class="plate">🥞</span>'.repeat(scaled.servings);
+           document.getElementById("ingredients").innerHTML = Object.entries(
+             scaled.ingredients
+           )
+             .map(([item, quantity]) => `<li>${item}: ${quantity}</li>`)
+             .join("");
+         }
+
+         document.querySelectorAll("button").forEach((button) => {
+           button.addEventListener("click", () => show(Number(button.dataset.factor)));
+         });
+         show(1);
+       </script>
+     </body>
+   </html>
    ```
 
-1. Open the **Pull requests** tab and select **New pull request**. Set the base to `main` and compare to `feat/recipe-model`, then select **Create pull request**.
+1. Open the **Pull requests** tab and select **New pull request**. Don't use the yellow **Compare & pull request** suggestions: they target `main`, and your layers need different base branches. Create these three pull requests one at a time, setting **base** and **compare** with the dropdowns, then selecting **Create pull request**:
 
-1. Create the next pull request. Set the base to `feat/recipe-model` and compare to `feat/recipe-scaling`, then select **Create pull request**.
+   | Pull request | base | compare |
+   | --- | --- | --- |
+   | 1 (bottom) | `main` | `feat/recipe-model` |
+   | 2 (middle) | `feat/recipe-model` | `feat/recipe-scaling` |
+   | 3 (top) | `feat/recipe-scaling` | `feat/recipe-page` |
 
-1. Create the last pull request. Set the base to `feat/recipe-scaling` and compare to `feat/recipe-cli`, then select **Create pull request**.
-
-1. At the top of the pull request, GitHub shows a banner: **This pull request can be stacked with other pull requests.** Select **Preview stack**.
+1. Open any of the three pull requests. GitHub shows a banner: **This pull request can be stacked with other pull requests.** Select **Preview stack**.
 
    ![The banner reading This pull request can be stacked with other pull requests, with a Preview stack button](https://github.com/{{ full_repo_name }}/blob/main/.github/images/3-preview-stack-banner.png?raw=true)
 
-1. Check that the preview lists your three pull requests from top to bottom: `feat/recipe-cli`, `feat/recipe-scaling`, `feat/recipe-model`. Select **Create stack** to link them.
+1. Check that the preview lists your three pull requests from top to bottom: `feat/recipe-page`, `feat/recipe-scaling`, `feat/recipe-model`. Select **Create stack** to link them.
 
    ![The Preview stack dialog listing the three pull requests above main, with a Create stack button](https://github.com/{{ full_repo_name }}/blob/main/.github/images/3-preview-stack-dialog.png?raw=true)
 
 1. Open the top pull request and find the stack icon and the stack map in the merge box.
 
-   ![The stack map listing the three pull requests above main, each marked Ready](https://github.com/{{ full_repo_name }}/blob/main/.github/images/4-stack-map.png?raw=true)
-
-1. Once the stack is linked, comment on this issue saying which branch each pull request targets. For example: `feat/recipe-model targets main`.
+1. Comment `Stack created` on this issue. Mona checks for the stack when you comment.
 
 1. Wait a moment for Mona to check your work, provide feedback, and share the next lesson.
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>
 
-- Mona checks when you comment on this issue, so confirm the stack first. If the feedback says the pull requests aren't linked yet, select **Create stack** in the preview, then post another comment on this issue to run the check again.
+- If the feedback says the pull requests aren't linked yet, select **Create stack** in the preview, then comment on this issue again to run the check again.
 - If a pull request has the wrong base, select **Edit** next to the title and change the base branch to the branch below it.
 - If you don't see the **Preview stack** banner, check that each pull request's base is the branch below it. If you dismissed the banner, reload the page.
 - If you don't see the stack map, create the stack from the preview. Check that all three pull requests are linked.
-- Check that your branch names are exactly `feat/recipe-model`, `feat/recipe-scaling`, and `feat/recipe-cli`.
+- Check that your branch names are exactly `feat/recipe-model`, `feat/recipe-scaling`, and `feat/recipe-page`.
 
 </details>
 

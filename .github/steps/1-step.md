@@ -1,6 +1,10 @@
 ## Step 1: Understand stacks and plan your layers
 
-Your team lead dropped a feature request in your lap: a recipe scaler. Rather than one giant pull request, you'll ship it as a stack, all from the GitHub website. First, let's learn what a stack is and plan the layers.
+Your team lead has a feature request for you:
+
+> **Recipe scaler:** "We want a small web page that shows a recipe, such as pancakes for 2 people, and lets visitors scale it up or down. Pick 4 servings and the page should show twice the ingredients and twice the pancakes."
+
+Rather than one giant pull request, you'll ship it as a **stack** of small pull requests, all from the GitHub website. First, let's learn what a stack is and plan the layers.
 
 ### 📖 Theory: What is a stack?
 
@@ -13,39 +17,33 @@ A stack is a series of two or more pull requests in the same repository. The bot
 
 ### ⌨️ Activity: Plan your pull request stack
 
-Your team has divided the recipe scaler feature into three pieces of work. Before creating branches or pull requests, you need to determine the order in which they should be developed. This shows you can identify dependencies between pieces of work and organize them into a valid stacked pull request structure.
+Your team split the recipe scaler into three pieces of work, listed here in no particular order. Before creating any branches, work out which piece must be built first, and which must wait for another.
 
-1. Open [`FEATURE_SPEC.md`](https://github.com/{{ full_repo_name }}/blob/main/FEATURE_SPEC.md) and read the descriptions of the three pieces of work.
+| File | What it does |
+| --- | --- |
+| `index.html` | The web page. It shows the recipe and some buttons, and draws plates of pancakes for the chosen number of servings. |
+| `scale.js` | The instructions for making a recipe bigger or smaller by multiplying every ingredient quantity. |
+| `recipe.js` | The recipe itself: its name, how many servings it makes, and its ingredients with quantities. |
 
-1. Identify what each piece requires from the others. For example, the scaling functionality needs a recipe model to work with, while the command-line interface needs both the model and the scaling functionality.
+1. Decide what each piece needs from the others. Ask yourself: which file would stop working if the others didn't exist?
 
-1. Arrange the three pieces into a dependency order:
+1. Arrange the three files from the bottom layer to the top layer. The bottom layer needs nothing from the others, and each layer above it can use the layers below it.
 
-   - **Bottom layer:** the foundational piece that has no dependencies on the other pieces.
-   - **Middle layer:** the piece that depends on the bottom layer.
-   - **Top layer:** the piece that depends on the layers below it.
-
-1. Find the corresponding branch name for each piece in `FEATURE_SPEC.md`.
-
-1. Reply to this issue with your proposed stack, listing the layers from bottom to top, one line per layer, in this format:
+1. Reply to this issue with your plan, one line per layer, starting each line with a number and the file name. The first line is the bottom layer. For example:
 
    ```text
-   1. `branch-name`: Briefly describe what this layer contains.
-   2. `branch-name`: Briefly describe what this layer contains.
-   3. `branch-name`: Briefly describe what this layer contains.
+   1. file-name: what this layer contains
+   2. file-name: what this layer contains
+   3. file-name: what this layer contains
    ```
-
-   > [!TIP]
-   > Example of one line: `1. feat/example: Description of the foundational work.`
 
 1. Wait a moment for Mona to check your work, provide feedback, and share the next lesson.
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>
 
-- Ask yourself: which file would break if the others didn't exist? `scale.py` needs a `Recipe`, and `cli.py` needs `scale`. The thing nothing depends on goes on top.
-- Your comment needs at least three lines that start with `-`, `*`, or a number such as `1.`.
-- The first line of your list is the bottom layer, and it should be the one that defines the `Recipe` model.
-- If the link doesn't open, go to the **Code** tab of your repository and select `FEATURE_SPEC.md`.
+- Your comment needs three lines that each start with a number such as `1.`, a dash, or a star, followed by the file name.
+- The first line is the bottom layer, and it should be `recipe.js`. The top layer is the one nothing else depends on.
+- Only the file name matters at this stage. You'll choose branch names in the next step.
 
 </details>

@@ -1,14 +1,17 @@
-# Stack It Up – Ship a Big Feature as Small, Reviewable Pull Requests
+# Introduction to Stacked Pull Requests
 
 _Break one large feature into a stack of small, dependent pull requests on the GitHub website, then merge it from the bottom up._
 
 ## Welcome
 
-- **Who is this for**: Developers comfortable with Git branches and pull requests.
+- **Who is this for**: Developers and anyone who works with pull requests, and who is comfortable with Git branches.
 - **What you'll learn**: What a stack is, how to build one from the GitHub website with branches and pull requests, and how bottom-up merging works.
-- **What you'll build**: A three-pull-request stack for a small Python "recipe scaler" app.
+- **What you'll build**: A three-pull-request stack for a small recipe scaler web page that you publish with GitHub Pages and see working.
 - **Prerequisites**:
   - A GitHub account. Everything happens in your browser, so no local setup is needed.
+  - You know what a branch and a pull request are.
+  - You can create a file in a repository from the GitHub website. If not, read [Creating new files](https://docs.github.com/en/repositories/working-with-files/managing-files/creating-new-files) first.
+  - No coding knowledge is needed. All of the code is provided for you to copy.
 
 - **How long**: This exercise takes less than 30 minutes to complete.
 
@@ -23,7 +26,7 @@ In this exercise, you will:
 
 Simply copy the exercise to your account, then give your favorite Octocat (Mona) **about 20 seconds** to prepare the first lesson, then **refresh the page**.
 
-[![](https://img.shields.io/badge/Copy%20Exercise-%E2%86%92-1f883d?style=for-the-badge&logo=github&labelColor=197935)](https://github.com/new?template_owner=v-chukslord1&template_name=stacked-prs-stack-it-up&owner=%40me&name=skills-stacked-prs-stack-it-up&description=Exercise:+Stack+It+Up+%E2%80%93+Ship+a+Big+Feature+as+Small,+Reviewable+Pull+Requests&visibility=public)
+[![](https://img.shields.io/badge/Copy%20Exercise-%E2%86%92-1f883d?style=for-the-badge&logo=github&labelColor=197935)](https://github.com/new?template_owner=v-chukslord1&template_name=stacked-prs-stack-it-up&owner=%40me&name=skills-stacked-prs-stack-it-up&description=Exercise:+Introduction+to+Stacked+Pull+Requests&visibility=public)
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>

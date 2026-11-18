@@ -71,7 +71,7 @@ jobs:
         id: check-open-prs
         continue-on-error: true
         run: |
-          for branch in feat/recipe-model feat/recipe-scaling feat/recipe-cli; do
+          for branch in feat/recipe-model feat/recipe-scaling feat/recipe-page; do
             count=$(gh pr list --repo "$ISSUE_REPOSITORY" --head "$branch" --state open --json number --jq length)
             echo "$branch: $count open pull request(s)"
             [ "$count" -ge 1 ]
@@ -88,7 +88,7 @@ jobs:
           }
           expect feat/recipe-model main
           expect feat/recipe-scaling feat/recipe-model
-          expect feat/recipe-cli feat/recipe-scaling
+          expect feat/recipe-page feat/recipe-scaling
 
       - name: Check the pull requests are linked as a stack
         id: check-stack
@@ -98,7 +98,7 @@ jobs:
           for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
             gh api -H "X-GitHub-Api-Version: 2026-03-10" "repos/$ISSUE_REPOSITORY/stacks" > stacks.json
             if jq -e '
-              any(.[]; ([.pull_requests[].head.ref] | contains(["feat/recipe-model","feat/recipe-scaling","feat/recipe-cli"])))
+              any(.[]; ([.pull_requests[].head.ref] | contains(["feat/recipe-model","feat/recipe-scaling","feat/recipe-page"])))
             ' stacks.json > /dev/null; then
               exit 0
             fi
@@ -118,7 +118,7 @@ jobs:
           vars: |
             step_number: 3
             results_table:
-              - description: "Opened pull requests for feat/recipe-model, feat/recipe-scaling, and feat/recipe-cli"
+              - description: "Opened pull requests for feat/recipe-model, feat/recipe-scaling, and feat/recipe-page"
                 passed: ${{ steps.check-open-prs.outcome == 'success' }}
               - description: "Each pull request targets the branch below it, with the first one on main"
                 passed: ${{ steps.check-bases.outcome == 'success' }}

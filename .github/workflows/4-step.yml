@@ -15,7 +15,7 @@ jobs:
     name: Find Exercise Issue
     if: |
       github.event.pull_request.merged == true &&
-      github.event.pull_request.head.ref == 'feat/recipe-cli'
+      github.event.pull_request.head.ref == 'feat/recipe-page'
     permissions:
       issues: read # locate the exercise issue
     uses: skills/exercise-toolkit/.github/workflows/find-exercise-issue.yml@v0.9.3
@@ -68,17 +68,17 @@ jobs:
         id: check-merged
         continue-on-error: true
         run: |
-          for branch in feat/recipe-model feat/recipe-scaling feat/recipe-cli; do
+          for branch in feat/recipe-model feat/recipe-scaling feat/recipe-page; do
             count=$(gh pr list --repo "$ISSUE_REPOSITORY" --head "$branch" --state merged --json number --jq length)
             echo "$branch: $count merged pull request(s)"
             [ "$count" -ge 1 ]
           done
 
-      - name: Check recipe.py, scale.py, and cli.py are on main
+      - name: Check recipe.js, scale.js, and index.html are on main
         id: check-main-files
         continue-on-error: true
         run: |
-          for file in recipe.py scale.py cli.py; do
+          for file in recipe.js scale.js index.html; do
             gh api "repos/$ISSUE_REPOSITORY/contents/$file?ref=main" --jq .name
           done
 
@@ -93,9 +93,9 @@ jobs:
           vars: |
             step_number: 4
             results_table:
-              - description: "Merged the pull requests for feat/recipe-model, feat/recipe-scaling, and feat/recipe-cli"
+              - description: "Merged the pull requests for feat/recipe-model, feat/recipe-scaling, and feat/recipe-page"
                 passed: ${{ steps.check-merged.outcome == 'success' }}
-              - description: "recipe.py, scale.py, and cli.py are on main"
+              - description: "recipe.js, scale.js, and index.html are on main"
                 passed: ${{ steps.check-main-files.outcome == 'success' }}
 
       # END: Check practical exercise
@@ -154,4 +154,4 @@ jobs:
     uses: skills/exercise-toolkit/.github/workflows/finish-exercise.yml@v0.9.3
     with:
       issue-url: ${{ needs.find_exercise.outputs.issue-url }}
-      exercise-title: "Stack It Up – Ship a Big Feature as Small, Reviewable Pull Requests"
+      exercise-title: "Introduction to Stacked Pull Requests"

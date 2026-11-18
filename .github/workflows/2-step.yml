@@ -66,22 +66,22 @@ jobs:
 
       # START: Check practical exercise
 
-      - name: Check recipe.py exists on feat/recipe-model
+      - name: Check recipe.js exists on feat/recipe-model
         id: check-model-file
         continue-on-error: true
-        run: gh api "repos/$ISSUE_REPOSITORY/contents/recipe.py?ref=feat/recipe-model" --jq .name
+        run: gh api "repos/$ISSUE_REPOSITORY/contents/recipe.js?ref=feat/recipe-model" --jq .name
 
-      - name: Check scale.py exists on feat/recipe-scaling
+      - name: Check scale.js exists on feat/recipe-scaling
         id: check-scaling-file
         continue-on-error: true
-        run: gh api "repos/$ISSUE_REPOSITORY/contents/scale.py?ref=feat/recipe-scaling" --jq .name
+        run: gh api "repos/$ISSUE_REPOSITORY/contents/scale.js?ref=feat/recipe-scaling" --jq .name
 
-      - name: Check scale.py uses the Recipe model from recipe.py
+      - name: Check scale.js uses the recipe from recipe.js
         id: check-scaling-import
         continue-on-error: true
         run: |
-          gh api -H "Accept: application/vnd.github.raw" "repos/$ISSUE_REPOSITORY/contents/scale.py?ref=feat/recipe-scaling" \
-            | grep -E '(from|import)[[:space:]]+recipe' > /dev/null
+          gh api -H "Accept: application/vnd.github.raw" "repos/$ISSUE_REPOSITORY/contents/scale.js?ref=feat/recipe-scaling" \
+            | grep -E "from[[:space:]]+['\"]\./recipe(\.js)?['\"]" > /dev/null
 
       - name: Check feat/recipe-scaling is stacked on feat/recipe-model
         id: check-order
@@ -102,11 +102,11 @@ jobs:
           vars: |
             step_number: 2
             results_table:
-              - description: "Pushed branch feat/recipe-model containing recipe.py"
+              - description: "Pushed branch feat/recipe-model containing recipe.js"
                 passed: ${{ steps.check-model-file.outcome == 'success' }}
-              - description: "Pushed branch feat/recipe-scaling containing scale.py"
+              - description: "Pushed branch feat/recipe-scaling containing scale.js"
                 passed: ${{ steps.check-scaling-file.outcome == 'success' }}
-              - description: "scale.py imports the Recipe model from recipe.py"
+              - description: "scale.js imports the recipe from recipe.js"
                 passed: ${{ steps.check-scaling-import.outcome == 'success' }}
               - description: "feat/recipe-scaling is stacked on top of feat/recipe-model"
                 passed: ${{ steps.check-order.outcome == 'success' }}
