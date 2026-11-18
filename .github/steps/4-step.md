@@ -27,6 +27,8 @@ Pull requests in a stack merge from the bottom up. You can merge the whole stack
 
 1. Wait a minute for your site to publish. Go back to **Settings** > **Pages** and select **Visit site**. Select the **1x**, **2x**, **3x**, and **4x** buttons and watch more pancakes appear.
 
+   ![The published recipe scaler page showing Pancakes for 2, two plates of pancakes, and the 1x to 4x buttons](https://github.com/{{ full_repo_name }}/blob/main/.github/images/4-recipe-scaler-site.png?raw=true)
+
 1. Wait a moment for Mona to check your work, provide feedback, and share the next lesson.
 
 <details>
