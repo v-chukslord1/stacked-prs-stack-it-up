@@ -96,14 +96,12 @@ When GitHub sees a chain like this, it offers to link the pull requests as a sta
 
 1. Open the top pull request and find the stack icon and the stack map in the merge box.
 
-1. Comment `Stack created` on this issue. Mona checks for the stack when you comment.
-
-1. Wait a moment for Mona to check your work, provide feedback, and share the next lesson.
+1. Wait a moment for Mona to check your work, provide feedback, and share the next lesson. Mona starts checking when you open the top pull request and waits up to 10 minutes for you to create the stack.
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>
 
-- If the feedback says the pull requests aren't linked yet, select **Create stack** in the preview, then comment on this issue again to run the check again.
+- If the feedback says the pull requests aren't linked yet, select **Create stack** in the preview, then close and reopen the top pull request (`feat/recipe-page`) to run the check again.
 - If a pull request has the wrong base, select **Edit** next to the title and change the base branch to the branch below it.
 - If you don't see the **Preview stack** banner, check that each pull request's base is the branch below it. If you dismissed the banner, reload the page.
 - If you don't see the stack map, create the stack from the preview. Check that all three pull requests are linked.

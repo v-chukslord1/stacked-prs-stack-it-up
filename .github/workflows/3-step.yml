@@ -1,9 +1,10 @@
 name: Step 3
 
 on:
-  issue_comment:
+  pull_request:
     types:
-      - created
+      - opened
+      - reopened
 
 permissions: {}
 
@@ -17,7 +18,10 @@ env:
 jobs:
   find_exercise:
     name: Find Exercise Issue
-    if: github.event.issue.pull_request == null && github.event.comment.user.type != 'Bot'
+    if: |
+      github.event.pull_request.head.ref == 'feat/recipe-page' &&
+      github.event.pull_request.base.ref == 'feat/recipe-scaling' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     permissions:
       issues: read # locate the exercise issue
     uses: skills/exercise-toolkit/.github/workflows/find-exercise-issue.yml@v0.9.3
@@ -26,7 +30,7 @@ jobs:
     name: Check step work
     runs-on: ubuntu-latest
     needs: [find_exercise]
-    if: needs.find_exercise.outputs.issue-number == github.event.issue.number
+    timeout-minutes: 15
     permissions:
       contents: read # read the exercise templates
       pull-requests: read # read pull requests and stacks
@@ -94,18 +98,27 @@ jobs:
         id: check-stack
         continue-on-error: true
         run: |
-          # the stack is linked just after the pull requests open, so retry for a minute
-          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+          # the learner links the stack after opening the top pull request, so poll for up to 10 minutes
+          for attempt in $(seq 1 40); do
             gh api -H "X-GitHub-Api-Version: 2026-03-10" "repos/$ISSUE_REPOSITORY/stacks" > stacks.json
             if jq -e '
               any(.[]; ([.pull_requests[].head.ref] | contains(["feat/recipe-model","feat/recipe-scaling","feat/recipe-page"])))
             ' stacks.json > /dev/null; then
               exit 0
             fi
-            echo "No linked stack yet (attempt $attempt), waiting"
-            sleep 5
+            echo "No linked stack yet (attempt $attempt of 40), waiting"
+            sleep 15
           done
           exit 1
+
+      - name: Explain how to retry
+        if: steps.check-open-prs.outcome == 'failure' || steps.check-bases.outcome == 'failure' || steps.check-stack.outcome == 'failure'
+        uses: GrantBirki/comment@v2.1.1
+        with:
+          repository: ${{ env.ISSUE_REPOSITORY }}
+          issue-number: ${{ env.ISSUE_NUMBER }}
+          body: |
+            Mona's check did not pass yet. Fix what is marked above, then close and reopen the top pull request (`feat/recipe-page`) to run the check again. If the stack is missing, open any of the three pull requests, select **Preview stack**, then **Create stack**.
 
       - name: Update comment - step results
         uses: GrantBirki/comment@v2.1.1

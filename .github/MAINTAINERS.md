@@ -10,7 +10,7 @@
 1. Copy the exercise into a scratch account or organization and wait for the Step 1 issue.
 1. Follow the steps in the GitHub web UI (no CLI needed), using branches `feat/recipe-model`, `feat/recipe-scaling`, and `feat/recipe-page`.
 1. Confirm each step's feedback fails with useful hints before it passes, and that the next step is posted.
-1. Confirm in step 3 that the `stacks` API (`X-GitHub-Api-Version: 2026-03-10`) returns the stack, and that commenting on the issue re-runs the check.
+1. Confirm in step 3 that the `stacks` API (`X-GitHub-Api-Version: 2026-03-10`) returns the stack, and that closing and reopening the top pull request re-runs the check. Also confirm Step 0 created the "Plan your recipe scaler stack" issue, and that editing its body triggers Step 1.
 
 ## Reset a learner copy
 

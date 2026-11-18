@@ -49,6 +49,17 @@ jobs:
           path: exercise-toolkit
           ref: v0.9.3
 
+      - name: Create the planning issue
+        id: plan-issue
+        run: |
+          url=$(gh issue create \
+            --repo "$ISSUE_REPOSITORY" \
+            --title "Plan your recipe scaler stack" \
+            --body-file .github/templates/plan-issue.md)
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create comment - add step content
         uses: GrantBirki/comment@v2.1.1
         with:
@@ -58,6 +69,7 @@ jobs:
           vars: |
             login: ${{ github.actor }}
             full_repo_name: ${{ github.repository }}
+            plan_issue_url: ${{ steps.plan-issue.outputs.url }}
 
       - name: Create comment - watching for progress
         uses: GrantBirki/comment@v2.1.1

@@ -1,9 +1,9 @@
 name: Step 1
 
 on:
-  issue_comment:
+  issues:
     types:
-      - created
+      - edited
 
 permissions: {}
 
@@ -14,8 +14,10 @@ jobs:
   find_exercise:
     name: Find Exercise Issue
     if: |
-      github.event.issue.pull_request == null &&
-      github.event.comment.user.type != 'Bot'
+      github.event.issue.title == 'Plan your recipe scaler stack' &&
+      github.event.issue.user.login == 'github-actions[bot]' &&
+      github.event.sender.type != 'Bot' &&
+      github.event.changes.body != null
     permissions:
       issues: read # locate the exercise issue
     uses: skills/exercise-toolkit/.github/workflows/find-exercise-issue.yml@v0.9.3
@@ -24,15 +26,13 @@ jobs:
     name: Check step work
     runs-on: ubuntu-latest
     needs: [find_exercise]
-    if: |
-      needs.find_exercise.outputs.issue-number == github.event.issue.number
     permissions:
       contents: read # read the exercise templates
       issues: write # post and update the feedback comment
     env:
       ISSUE_REPOSITORY: ${{ github.repository }}
       ISSUE_NUMBER: ${{ needs.find_exercise.outputs.issue-number }}
-      COMMENT_BODY: ${{ github.event.comment.body }}
+      ISSUE_BODY: ${{ github.event.issue.body }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -65,24 +65,9 @@ jobs:
 
       # START: Check practical exercise
 
-      - name: Check the comment lists at least three layers
-        id: check-layers
-        continue-on-error: true
-        run: |
-          count=$(printf '%s\n' "$COMMENT_BODY" | grep -Ec '^[[:space:]]*([-*]|[0-9]+\.)[[:space:]]+[^[:space:]]' || true)
-          echo "Found $count list lines"
-          [ "$count" -ge 3 ]
-
-      - name: Check the layers are in dependency order
-        id: check-order
-        continue-on-error: true
-        run: |
-          lines=$(printf '%s\n' "$COMMENT_BODY" | grep -E '^[[:space:]]*([-*]|[0-9]+\.)[[:space:]]+[^[:space:]]' || true)
-          echo "$lines"
-          starts() { printf '%s\n' "$lines" | sed -n "$1p" | grep -Ei "^[[:space:]]*([-*]|[0-9]+\.)[[:space:]]+[\`*_]*$2" > /dev/null; }
-          starts 1 'recipe\.js'
-          starts 2 'scale\.js'
-          starts 3 'index\.html'
+      - name: Grade the plan
+        id: grade
+        run: python3 .github/scripts/check-plan.py
 
       - name: Update comment - step results
         uses: GrantBirki/comment@v2.1.1
@@ -95,16 +80,20 @@ jobs:
           vars: |
             step_number: 1
             results_table:
-              - description: "Your comment lists at least 3 layers, one per line starting with - or a number"
-                passed: ${{ steps.check-layers.outcome == 'success' }}
-              - description: "Your layers are in dependency order: recipe.js at the bottom, then scale.js, then index.html on top"
-                passed: ${{ steps.check-order.outcome == 'success' }}
+              - description: "Your plan has exactly three entries, labelled Layer 1, Layer 2, and Layer 3"
+                passed: ${{ steps.grade.outputs.count_ok == 'true' }}
+              - description: "Each of recipe.js, scale.js, and index.html is used exactly once"
+                passed: ${{ steps.grade.outputs.files_ok == 'true' }}
+              - description: "Your layers are in dependency order, from the bottom layer to the top"
+                passed: ${{ steps.grade.outputs.order_ok == 'true' }}
 
       # END: Check practical exercise
 
       - name: Fail job if not all checks passed
-        if: contains(steps.*.outcome, 'failure')
-        run: exit 1
+        if: steps.grade.outputs.all_ok != 'true'
+        run: |
+          echo "::error::${{ steps.grade.outputs.hint }}"
+          exit 1
 
   post_next_step_content:
     name: Post next step content

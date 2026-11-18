@@ -17,33 +17,25 @@ A stack is a series of two or more pull requests in the same repository. The bot
 
 ### ⌨️ Activity: Plan your pull request stack
 
-Your team split the recipe scaler into three pieces of work, listed here in no particular order. Before creating any branches, work out which piece must be built first, and which must wait for another.
+I opened a separate issue for your team's feature request: [Plan your recipe scaler stack]({{ plan_issue_url }}). It lists the three pieces of work, in no particular order, and has a short template for your plan.
 
-| File | What it does |
-| --- | --- |
-| `index.html` | The web page. It shows the recipe and some buttons, and draws plates of pancakes for the chosen number of servings. |
-| `scale.js` | The instructions for making a recipe bigger or smaller by multiplying every ingredient quantity. |
-| `recipe.js` | The recipe itself: its name, how many servings it makes, and its ingredients with quantities. |
+1. Open [Plan your recipe scaler stack]({{ plan_issue_url }}) and read the three pieces of work.
 
 1. Decide what each piece needs from the others. Ask yourself: which file would stop working if the others didn't exist?
 
-1. Arrange the three files from the bottom layer to the top layer. The bottom layer needs nothing from the others, and each layer above it can use the layers below it.
+1. Edit the issue description by selecting the pencil icon at the top right. Next to each layer, type a file name, from the bottom layer to the top layer. Use each file exactly once.
 
-1. Reply to this issue with your plan, one line per layer, starting each line with a number and the file name. The first line is the bottom layer. For example:
-
-   ```text
-   1. file-name: what this layer contains
-   2. file-name: what this layer contains
-   3. file-name: what this layer contains
-   ```
+1. Select **Save**. Mona checks your plan and replies on this issue.
 
 1. Wait a moment for Mona to check your work, provide feedback, and share the next lesson.
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>
 
-- Your comment needs three lines that each start with a number such as `1.`, a dash, or a star, followed by the file name.
-- The first line is the bottom layer, and it should be `recipe.js`. The top layer is the one nothing else depends on.
+- Edit the issue description itself, not a comment. Mona only checks when you save an edit to the description.
+- Keep the `- Layer N` labels, and type the file name straight after the colon.
+- The bottom layer needs nothing from the other files, and the top layer is the one nothing else depends on.
+- If you got feedback, edit the description again and save. Each save is checked.
 - Only the file name matters at this stage. You'll choose branch names in the next step.
 
 </details>

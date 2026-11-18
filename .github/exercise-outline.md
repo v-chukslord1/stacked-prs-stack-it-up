@@ -36,10 +36,10 @@ A team lead wants a "recipe scaler" feature. A single large PR would stall in re
 ### Step 1: Understand stacks and plan your layers
 
 - Theory: what a stack is (bottom PR targets trunk, each later PR targets the branch below, dependencies go in lower layers).
-- Activity: order three unordered files (`recipe.js`, `scale.js`, `index.html`, described in the step text) by dependency and comment a 3-layer plan, bottom first, on the Step 1 issue.
-- Actions Trigger: `issue_comment`
-- Grading-Check: graded; the comment lists at least 3 layers.
-- Learner artifact: a comment with the layered plan.
+- Activity: order three unordered files (`recipe.js`, `scale.js`, `index.html`) by dependency by editing the body of the planning issue "Plan your recipe scaler stack", which Step 0 creates with the feature request and a fill-in template.
+- Actions Trigger: `issues: edited` on the planning issue only (title match, bot author, human editor, body changed). Feedback is posted on the main exercise issue.
+- Grading-Check: graded by `.github/scripts/check-plan.py`; exactly three `Layer N:` entries, each of the three files exactly once, in the order `recipe.js`, `scale.js`, `index.html`.
+- Learner artifact: the edited planning issue body.
 
 ### Step 2: Build the first two layers
 
@@ -53,8 +53,8 @@ A team lead wants a "recipe scaler" feature. A single large PR would stall in re
 ### Step 3: Add the top layer and submit the stack
 
 - Theory: creating a stack in the UI, the stack icon and stack map, rules and CI run for every layer.
-- Activity: layer 3 `feat/recipe-page` (`index.html`, code provided), open three PRs with chained bases and confirm the Preview stack banner, comment `Stack created`.
-- Actions Trigger: `issue_comment` on the Step 3 issue (the learner comments after confirming the stack; later comments retry)
+- Activity: layer 3 `feat/recipe-page` (`index.html`, code provided), open three PRs with chained bases, then Preview stack and Create stack.
+- Actions Trigger: `pull_request` `opened` and `reopened` for head `feat/recipe-page` and base `feat/recipe-scaling` from this repository. Polls the stacks API for up to 10 minutes; closing and reopening the top PR retries.
 - Grading-Check: graded; the stacks API returns one stack of three PRs with the expected branches on `main`.
 - Learner artifact: a 3-PR linked stack.
 
