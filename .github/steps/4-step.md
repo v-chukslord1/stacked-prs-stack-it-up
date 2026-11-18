@@ -27,7 +27,18 @@ Pull requests in a stack merge from the bottom up. You can merge the whole stack
 
 1. Wait a minute for your site to publish. Go back to **Settings** > **Pages** and select **Visit site**. Select the **1x**, **2x**, **3x**, and **4x** buttons and watch more pancakes appear.
 
-   ![The published recipe scaler page showing Pancakes for 2, two plates of pancakes, and the 1x to 4x buttons](https://github.com/{{ full_repo_name }}/blob/main/.github/images/4-recipe-scaler-site.png?raw=true)
+   ![A recording of the recipe scaler: selecting 1x, 2x, 3x, and 4x adds more plates of pancakes and increases the ingredient amounts](https://github.com/{{ full_repo_name }}/blob/main/.github/images/4-recipe-scaler-site.gif?raw=true)
+
+   Use the buttons at the top of the page to scale the recipe. Each button is a multiplier, and the page redraws straight away when you select one:
+
+   | Button | Servings | Plates of pancakes | Flour | Milk | Eggs |
+   | --- | --- | --- | --- | --- | --- |
+   | **1x** | 2 | 2 | 1 | 1 | 1 |
+   | **2x** | 4 | 4 | 2 | 2 | 2 |
+   | **3x** | 6 | 6 | 3 | 3 | 3 |
+   | **4x** | 8 | 8 | 4 | 4 | 4 |
+
+   The heading changes to match, such as **Pancakes for 4**. This works because `index.html` (layer 3) asks `scale.js` (layer 2) to multiply the recipe from `recipe.js` (layer 1). All three layers of your stack are working together.
 
 1. Wait a moment for Mona to check your work, provide feedback, and share the next lesson.
 
