@@ -16,10 +16,22 @@ Your team split the work into three files, listed here in no particular order.
 
 Decide which file must be built first and which files depend on others. The bottom layer needs nothing from the other files, and each layer above it can use the layers below.
 
-Select the pencil icon at the top right of this issue description to edit it, then write a file name after each colon below. Use each file exactly once. After the file name you can add a short description.
+For each layer, tick the box next to the file that belongs there. Tick one file per layer, and use each file once. Ticking a box saves it automatically. Mona checks your plan once every layer has a file, then replies on the exercise issue.
 
-- Layer 1 (bottom): 
-- Layer 2 (middle): 
-- Layer 3 (top): 
+### Layer 1 (bottom)
 
-Select **Save** when you are done. Mona will check your plan and reply on the exercise issue.
+- [ ] `recipe.js`
+- [ ] `scale.js`
+- [ ] `index.html`
+
+### Layer 2 (middle)
+
+- [ ] `recipe.js`
+- [ ] `scale.js`
+- [ ] `index.html`
+
+### Layer 3 (top)
+
+- [ ] `recipe.js`
+- [ ] `scale.js`
+- [ ] `index.html`

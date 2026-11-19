@@ -36,10 +36,10 @@ A team lead wants a "recipe scaler" feature. A single large PR would stall in re
 ### Step 1: Understand stacks and plan your layers
 
 - Theory: what a stack is (bottom PR targets trunk, each later PR targets the branch below, dependencies go in lower layers).
-- Activity: order three unordered files (`recipe.js`, `scale.js`, `index.html`) by dependency by editing the body of the planning issue "Plan your recipe scaler stack", which Step 0 creates with the feature request and a fill-in template.
-- Actions Trigger: `issues: edited` on the planning issue only (title match, bot author, human editor, body changed). Feedback is posted on the main exercise issue.
-- Grading-Check: graded by `.github/scripts/check-plan.py`; exactly three `Layer N:` entries, each of the three files exactly once, in the order `recipe.js`, `scale.js`, `index.html`.
-- Learner artifact: the edited planning issue body.
+- Activity: order three unordered files (`recipe.js`, `scale.js`, `index.html`) by dependency by ticking one checkbox per layer in the planning issue "Plan your recipe scaler stack", which Step 0 creates with the feature request and a fill-in template.
+- Actions Trigger: `issues: edited` on the planning issue only (title match, bot author, human editor, body changed). A gate job waits until every layer has a file ticked. Feedback is posted on the main exercise issue.
+- Grading-Check: graded by `.github/scripts/check-plan.py`; exactly one ticked file under each `Layer N` heading, each of the three files exactly once, in the order `recipe.js`, `scale.js`, `index.html`.
+- Learner artifact: the ticked planning issue.
 
 ### Step 2: Build the first two layers
 

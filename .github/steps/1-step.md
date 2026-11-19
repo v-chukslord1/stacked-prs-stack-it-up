@@ -17,25 +17,26 @@ A stack is a series of two or more pull requests in the same repository. The bot
 
 ### ⌨️ Activity: Plan your pull request stack
 
-I opened a separate issue for your team's feature request: [Plan your recipe scaler stack]({{ plan_issue_url }}). It lists the three pieces of work, in no particular order, and has a short template for your plan.
+I opened a separate issue for your team's feature request: [Plan your recipe scaler stack]({{ plan_issue_url }}). It lists the three pieces of work, in no particular order, and has checkboxes for your plan.
 
 1. Open [Plan your recipe scaler stack]({{ plan_issue_url }}) and read the three pieces of work.
 
 1. Decide what each piece needs from the others. Ask yourself: which file would stop working if the others didn't exist?
 
-1. Edit the issue description by selecting the pencil icon at the top right. Next to each layer, type a file name, from the bottom layer to the top layer. Use each file exactly once.
+1. In the issue, tick one file under each layer heading, from the bottom layer to the top layer. Use each file exactly once. Ticking a box saves it.
 
-1. Select **Save**. Mona checks your plan and replies on this issue.
+1. Once every layer has a file, Mona checks your plan and replies on this issue.
 
 1. Wait a moment for Mona to check your work, provide feedback, and share the next lesson.
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>
 
-- Edit the issue description itself, not a comment. Mona only checks when you save an edit to the description.
-- Keep the `- Layer N` labels, and type the file name straight after the colon.
+- Tick the boxes in the issue description itself, not in a comment. Mona checks when you change the description.
+- Tick exactly one box under each of the three layer headings. If you tick the wrong one, untick it and tick another.
+- Mona waits until every layer has a file ticked, then checks.
 - The bottom layer needs nothing from the other files, and the top layer is the one nothing else depends on.
-- If you got feedback, edit the description again and save. Each save is checked.
+- If you got feedback, change your ticks. Each change is checked once every layer has a file.
 - Only the file name matters at this stage. You'll choose branch names in the next step.
 
 </details>
