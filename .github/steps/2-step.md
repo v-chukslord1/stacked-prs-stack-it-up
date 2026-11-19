@@ -38,7 +38,7 @@ Each layer of a stack lives on its own branch, and each new branch is created fr
 
 1. Select **Commit changes...**, choose **Commit directly to the `feat/recipe-model` branch**, and commit.
 
-   ![The Commit changes dialog with Commit directly to the branch selected](https://github.com/{{ full_repo_name }}/blob/main/.github/images/2-commit-dialog.png?raw=true)
+   <img src="https://github.com/{{ full_repo_name }}/blob/main/.github/images/2-commit-dialog.png?raw=true" alt="The Commit changes dialog with Commit directly to the branch selected" width="400">
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>
