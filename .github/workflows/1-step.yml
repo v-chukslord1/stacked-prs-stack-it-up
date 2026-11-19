@@ -22,29 +22,12 @@ jobs:
       issues: read # locate the exercise issue
     uses: skills/exercise-toolkit/.github/workflows/find-exercise-issue.yml@v0.9.3
 
-  gate:
-    name: Wait for a complete plan
-    runs-on: ubuntu-latest
-    needs: [find_exercise]
-    permissions:
-      contents: read # read the grader script
-    outputs:
-      complete: ${{ steps.grade.outputs.complete }}
-    env:
-      ISSUE_BODY: ${{ github.event.issue.body }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Check every layer has a file
-        id: grade
-        run: python3 .github/scripts/check-plan.py
-
   check_step_work:
     name: Check step work
     runs-on: ubuntu-latest
-    needs: [find_exercise, gate]
-    if: needs.gate.outputs.complete == 'true'
+    needs: [find_exercise]
+    outputs:
+      passed: ${{ steps.grade.outputs.all_ok }}
     permissions:
       contents: read # read the exercise templates
       issues: write # post and update the feedback comment
@@ -63,8 +46,14 @@ jobs:
           path: exercise-toolkit
           ref: v0.9.3
 
+      # Ticking boxes edits the issue one click at a time, so wait for a full plan
+      - name: Grade the plan
+        id: grade
+        run: python3 .github/scripts/check-plan.py
+
       - name: Find last comment
         id: find-last-comment
+        if: steps.grade.outputs.complete == 'true'
         uses: peter-evans/find-comment@v4
         with:
           repository: ${{ env.ISSUE_REPOSITORY }}
@@ -73,6 +62,7 @@ jobs:
           direction: last
 
       - name: Update comment - checking work
+        if: steps.grade.outputs.complete == 'true'
         uses: GrantBirki/comment@v2.1.1
         with:
           repository: ${{ env.ISSUE_REPOSITORY }}
@@ -83,11 +73,8 @@ jobs:
 
       # START: Check practical exercise
 
-      - name: Grade the plan
-        id: grade
-        run: python3 .github/scripts/check-plan.py
-
       - name: Update comment - step results
+        if: steps.grade.outputs.complete == 'true'
         uses: GrantBirki/comment@v2.1.1
         with:
           repository: ${{ env.ISSUE_REPOSITORY }}
@@ -108,7 +95,7 @@ jobs:
       # END: Check practical exercise
 
       - name: Fail job if not all checks passed
-        if: steps.grade.outputs.all_ok != 'true'
+        if: steps.grade.outputs.complete == 'true' && steps.grade.outputs.all_ok != 'true'
         run: |
           echo "::error::${{ steps.grade.outputs.hint }}"
           exit 1
@@ -116,6 +103,7 @@ jobs:
   post_next_step_content:
     name: Post next step content
     needs: [find_exercise, check_step_work]
+    if: needs.check_step_work.outputs.passed == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read # checkout step content
